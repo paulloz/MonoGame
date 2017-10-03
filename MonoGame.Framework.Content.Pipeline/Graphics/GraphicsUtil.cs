@@ -191,8 +191,8 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Graphics
             var face = content.Faces[0][0];
             var alphaRange = CalculateAlphaRange(face);
 
-            // Use BGRA4444 for textures with non-opaque alpha values
-            if (alphaRange != AlphaRange.Opaque)
+            // Use BGRA4444 for textures with non-opaque alpha values or non-POT textures
+            if (alphaRange != AlphaRange.Opaque || (!IsPowerOfTwo(face.Width) || !IsPowerOfTwo(face.Height)))
                 content.ConvertBitmapType(typeof(PixelBitmapContent<Bgra4444>));
             else
             {
