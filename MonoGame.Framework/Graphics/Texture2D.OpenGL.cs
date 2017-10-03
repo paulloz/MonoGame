@@ -205,8 +205,9 @@ namespace Microsoft.Xna.Framework.Graphics
 
                     if (glFormat == (PixelFormat)GLPixelFormat.CompressedTextureFormats)
                     {
-                        GL.CompressedTexSubImage2D(TextureTarget.Texture2D, level, rect.X, rect.Y, rect.Width, rect.Height,
-                            (PixelInternalFormat)glInternalFormat, elementCount * elementSizeInByte, dataPtr);
+                        //GL.CompressedTexSubImage2D(TextureTarget.Texture2D, level, rect.X, rect.Y, rect.Width, rect.Height,
+                        //    (PixelInternalFormat)glInternalFormat, elementCount * elementSizeInByte, dataPtr);
+                        GL.CompressedTexImage2D(TextureTarget.Texture2D, level, glInternalFormat, rect.Width, rect.Height, 0, elementCount * elementSizeInByte, dataPtr);
                     }
                     else
                     {
