@@ -21,8 +21,10 @@ namespace Microsoft.Xna.Framework
                 return Android.App.Application.Context.Assets.Open(safeName);
             }
             catch (Exception)
-            { 
+            {
                 // File not found, checking if an APK expansion contains it
+
+                bool accessError = false;
 
                 // Init .obb file
                 if (_expansionFile == null)
@@ -62,9 +64,7 @@ namespace Microsoft.Xna.Framework
                                 {
                                     // Couldn't open the .obb
                                     _expansionFile = null;
-
-                                    // If we can't open it, it's most probably because we don't have read access on the SD card
-                                    throw new UnauthorizedAccessException("External storage read permission is required to open file " + safeName);
+                                    accessError = true;
                                 }                                                                    
                             }
                         }
@@ -74,6 +74,14 @@ namespace Microsoft.Xna.Framework
                 // No .obb file
                 if (_expansionFile == null)
                 {
+                    if (accessError)
+                    {
+                        // If we can't open it, it's most probably because of this Android bug:
+                        // https://issuetracker.google.com/issues/37544273
+                        // The only known workaround is to re-download the .obb manually within the app
+                        // For reference: https://developer.android.com/google/play/expansion-files.html
+                        throw new UnauthorizedAccessException("External storage read permission is required to open file " + safeName);
+                    }
                     throw new FileNotFoundException("Can't find file " + safeName);
                 }
 
