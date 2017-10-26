@@ -51,6 +51,10 @@ namespace Microsoft.Xna.Framework
             {
                 throw;
             }
+            catch (UnauthorizedAccessException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new FileNotFoundException(name, ex);

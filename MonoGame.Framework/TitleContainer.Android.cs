@@ -53,13 +53,18 @@ namespace Microsoft.Xna.Framework
                                     _expansionFile = ZipFile.OpenRead(pathToObb);
                                     break; // Everything's fine, we found the .obb
                                 }
+                                catch (FileNotFoundException)
+                                {
+                                    // The .obb doesn't exist in this location
+                                    _expansionFile = null;
+                                }
                                 catch (Exception)
                                 {
                                     // Couldn't open the .obb
                                     _expansionFile = null;
 
-                                    // Is this because the file doesn't exist?
-                                    // Or is it because we don't have read permissions on external storage?
+                                    // If we can't open it, it's most probably because we don't have read access on the SD card
+                                    throw new UnauthorizedAccessException("External storage read permission is required to open file " + safeName);
                                 }                                                                    
                             }
                         }

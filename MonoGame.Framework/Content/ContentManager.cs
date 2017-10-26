@@ -263,6 +263,10 @@ namespace Microsoft.Xna.Framework.Content
 			{
 				throw new ContentLoadException("The content file was not found.", fileNotFound);
 			}
+            catch (UnauthorizedAccessException unauthorized)
+            {
+                throw new ContentLoadException("Unauthorized access to asset.", unauthorized);
+            }
 #if !WINRT
 			catch (DirectoryNotFoundException directoryNotFound)
 			{
